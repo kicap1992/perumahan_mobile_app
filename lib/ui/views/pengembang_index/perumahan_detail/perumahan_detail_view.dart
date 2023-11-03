@@ -24,6 +24,9 @@ class PerumahanDetailView extends StatelessWidget {
       ) {
         return Scaffold(
           appBar: AppBar(
+            iconTheme: const IconThemeData(
+              color: backgroundColor,
+            ),
             title: Text(
               'Perumahan Blok ${model.blok} , No. ${model.idRumah}',
               style: const TextStyle(
@@ -34,15 +37,7 @@ class PerumahanDetailView extends StatelessWidget {
             backgroundColor: mainColor,
             elevation: 0,
           ),
-          body: WillPopScope(
-            onWillPop: () async {
-              if (model.globalVar.backPressed == 'exitApp') {
-                // model.back();
-                return true;
-                // model.quitApp(context);
-              }
-              return false;
-            },
+          body: SafeArea(
             child: Stack(
               children: [
                 Padding(
@@ -190,7 +185,8 @@ class PerumahanDetailView extends StatelessWidget {
                                         return Card(
                                           child: GestureDetector(
                                             onTap: () {
-                                              model.log.i('Card $index tapped');
+                                              model.checkProgress(
+                                                  model.progressModel![index]);
                                             },
                                             child: ListTile(
                                               title: Text(
@@ -245,6 +241,70 @@ class PerumahanDetailView extends StatelessWidget {
                       ),
                     ),
                   ),
+                // create whatsapp button
+                Positioned(
+                  top: model.level == 'Mandor' ? 80 : 15,
+                  right: 15,
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: greenColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        model.openWhatsapp();
+                      },
+                      icon: const Icon(
+                        Icons.chat_outlined,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                ),
+                // create call button
+                Positioned(
+                  top: model.level == 'Mandor' ? 145 : 80,
+                  right: 15,
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: mainColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        model.call();
+                      },
+                      icon: const Icon(
+                        Icons.call_outlined,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

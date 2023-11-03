@@ -25,11 +25,11 @@ import 'package:perumahan_bew/ui/views/pengembang_index/perumahan_detail/perumah
     as _i6;
 import 'package:perumahan_bew/ui/views/splash_screen/splash_screen_view.dart'
     as _i2;
-import 'package:perumahan_bew/ui/views/user_index/user_home/user_home_view.dart'
-    as _i9;
 import 'package:perumahan_bew/ui/views/user_index/user_index_view.dart' as _i4;
-import 'package:perumahan_bew/ui/views/user_index/user_list_pembangunan/user_list_pembangunan_view.dart'
+import 'package:perumahan_bew/ui/views/user_index/user_list_pembangunan/user_list_pembangunan_page/user_list_pembangunan_page_view.dart'
     as _i11;
+import 'package:perumahan_bew/ui/views/user_index/user_list_pembangunan/user_list_pembangunan_view.dart'
+    as _i9;
 import 'package:perumahan_bew/ui/views/user_index/user_profile/user_profile_view.dart'
     as _i10;
 import 'package:stacked/stacked.dart' as _i1;
@@ -162,39 +162,39 @@ class PerumahanDetailViewArguments {
 }
 
 class UserIndexViewRoutes {
-  static const userHomeView = '';
+  static const userListPembangunanView = '';
 
   static const userProfileView = 'user-profile-view';
 
-  static const userListPembangunanView = 'user-list-pembangunan-view';
+  static const userListPembangunanPageView = 'user-list-pembangunan-page-view';
 
   static const all = <String>{
-    userHomeView,
-    userProfileView,
     userListPembangunanView,
+    userProfileView,
+    userListPembangunanPageView,
   };
 }
 
 class UserIndexViewRouter extends _i1.RouterBase {
   final _routes = <_i1.RouteDef>[
     _i1.RouteDef(
-      UserIndexViewRoutes.userHomeView,
-      page: _i9.UserHomeView,
+      UserIndexViewRoutes.userListPembangunanView,
+      page: _i9.UserListPembangunanView,
     ),
     _i1.RouteDef(
       UserIndexViewRoutes.userProfileView,
       page: _i10.UserProfileView,
     ),
     _i1.RouteDef(
-      UserIndexViewRoutes.userListPembangunanView,
-      page: _i11.UserListPembangunanView,
+      UserIndexViewRoutes.userListPembangunanPageView,
+      page: _i11.UserListPembangunanPageView,
     ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
-    _i9.UserHomeView: (data) {
+    _i9.UserListPembangunanView: (data) {
       return _i8.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i9.UserHomeView(),
+        builder: (context) => const _i9.UserListPembangunanView(),
         settings: data,
       );
     },
@@ -204,9 +204,9 @@ class UserIndexViewRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i11.UserListPembangunanView: (data) {
+    _i11.UserListPembangunanPageView: (data) {
       return _i8.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i11.UserListPembangunanView(),
+        builder: (context) => const _i11.UserListPembangunanPageView(),
         settings: data,
       );
     },
@@ -450,14 +450,14 @@ extension NavigatorStateExtension on _i16.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToNestedUserHomeViewInUserIndexViewRouter([
+  Future<dynamic> navigateToNestedUserListPembangunanViewInUserIndexViewRouter([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   ]) async {
-    return navigateTo<dynamic>(UserIndexViewRoutes.userHomeView,
+    return navigateTo<dynamic>(UserIndexViewRoutes.userListPembangunanView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -478,14 +478,15 @@ extension NavigatorStateExtension on _i16.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToNestedUserListPembangunanViewInUserIndexViewRouter([
+  Future<dynamic>
+      navigateToNestedUserListPembangunanPageViewInUserIndexViewRouter([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   ]) async {
-    return navigateTo<dynamic>(UserIndexViewRoutes.userListPembangunanView,
+    return navigateTo<dynamic>(UserIndexViewRoutes.userListPembangunanPageView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -701,14 +702,15 @@ extension NavigatorStateExtension on _i16.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithNestedUserHomeViewInUserIndexViewRouter([
+  Future<dynamic>
+      replaceWithNestedUserListPembangunanViewInUserIndexViewRouter([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   ]) async {
-    return replaceWith<dynamic>(UserIndexViewRoutes.userHomeView,
+    return replaceWith<dynamic>(UserIndexViewRoutes.userListPembangunanView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -730,14 +732,14 @@ extension NavigatorStateExtension on _i16.NavigationService {
   }
 
   Future<dynamic>
-      replaceWithNestedUserListPembangunanViewInUserIndexViewRouter([
+      replaceWithNestedUserListPembangunanPageViewInUserIndexViewRouter([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   ]) async {
-    return replaceWith<dynamic>(UserIndexViewRoutes.userListPembangunanView,
+    return replaceWith<dynamic>(UserIndexViewRoutes.userListPembangunanPageView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

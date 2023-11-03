@@ -1,4 +1,5 @@
 import 'package:perumahan_bew/ui/views/play_video_dialog/play_video_dialog_view.dart';
+import 'package:perumahan_bew/ui/views/user_index/user_list_pembangunan/user_list_pembangunan_page/user_list_pembangunan_page_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked/stacked_annotations.dart';
 
@@ -18,7 +19,6 @@ import '../ui/views/pengembang_index/pengembang_profil/pengembang_profil_view.da
 import '../ui/views/pengembang_index/perumahan_detail/perumahan_detail_view.dart';
 import '../ui/views/splash_screen/splash_screen_view.dart';
 import '../ui/views/tambah_lihat_progress_bottom_sheet/tambah_lihat_progress_bottom_sheet_view.dart';
-import '../ui/views/user_index/user_home/user_home_view.dart';
 import '../ui/views/user_index/user_index_view.dart';
 import '../ui/views/user_index/user_list_pembangunan/user_list_pembangunan_view.dart';
 import '../ui/views/user_index/user_profile/user_profile_view.dart';
@@ -30,9 +30,9 @@ import '../ui/views/user_index/user_profile/user_profile_view.dart';
     MaterialRoute(
       page: UserIndexView,
       children: [
-        MaterialRoute(page: UserHomeView, initial: true),
+        MaterialRoute(page: UserListPembangunanView, initial: true),
         MaterialRoute(page: UserProfileView),
-        MaterialRoute(page: UserListPembangunanView),
+        MaterialRoute(page: UserListPembangunanPageView),
       ],
     ),
     // dibawah untuk admin
@@ -60,7 +60,6 @@ import '../ui/views/user_index/user_profile/user_profile_view.dart';
     LazySingleton(classType: SnackbarService),
     LazySingleton(classType: BottomSheetService),
     //
-    LazySingleton(classType: UserHomeView),
     LazySingleton(classType: PengembangHomeView),
     LazySingleton(classType: MyEasyLoading),
     LazySingleton(classType: MyHttpServices),

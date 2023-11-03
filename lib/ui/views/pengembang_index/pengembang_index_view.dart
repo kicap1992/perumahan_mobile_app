@@ -38,6 +38,18 @@ class PengembangIndexView extends StatelessWidget {
             backgroundColor: mainColor,
             elevation: 0,
             automaticallyImplyLeading: false,
+            actions: [
+              // create logout button
+              IconButton(
+                onPressed: () {
+                  model.logout();
+                },
+                icon: const Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
           body: ExtendedNavigator(
             navigatorKey: StackedService.nestedNavigationKey(3),

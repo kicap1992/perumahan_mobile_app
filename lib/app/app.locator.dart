@@ -18,7 +18,6 @@ import '../services/my_easyloading.dart';
 import '../services/other_function.dart';
 import '../services/shared_prefs.dart';
 import '../ui/views/pengembang_index/pengembang_home/pengembang_home_view.dart';
-import '../ui/views/user_index/user_home/user_home_view.dart';
 
 final locator = StackedLocator.instance;
 
@@ -35,7 +34,6 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => DialogService());
   locator.registerLazySingleton(() => SnackbarService());
   locator.registerLazySingleton(() => BottomSheetService());
-  locator.registerLazySingleton(() => const UserHomeView());
   locator.registerLazySingleton(() => const PengembangHomeView());
   locator.registerLazySingleton(() => MyEasyLoading());
   locator.registerLazySingleton(() => MyHttpServices());

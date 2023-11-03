@@ -21,99 +21,118 @@ class UserProfileView extends StatelessWidget {
         Widget? child,
       ) {
         return Scaffold(
-          body: Stack(
-            children: [
-              Column(
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Stack(
                 children: [
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  // create a rounded container
-                  Center(
-                    child: Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: const NetworkImage(
-                            'http://kicap-karan.com/assets/img/me.jpg',
-                          ),
-                          fit: BoxFit.cover,
-                          onError: (exception, stackTrace) {
-                            model.log.e('Error: $exception');
-                          },
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 7,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Center(
-                    child: Text(
-                      'Kicap Karan',
-                      style: boldTextStyle.copyWith(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 10),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  Column(
+                    children: [
+                      // create a rounded container
+                      Center(
+                        child: Stack(
                           children: [
-                            for (var i = 0; i < 10; i++) const _DetailChild(),
+                            const CircleAvatar(
+                              radius: 50,
+                              backgroundColor: fontParagraphColor,
+                              // child: model.imageBytes == null
+                              //     ? const Icon(
+                              //         Icons.person,
+                              //         size: 50,
+                              //         color: Colors.white,
+                              //       )
+                              //     : ClipRRect(
+                              //         borderRadius: BorderRadius.circular(50),
+                              //         child: Image.memory(
+                              //           model.imageBytes!,
+                              //           width: 100,
+                              //           height: 100,
+                              //           fit: BoxFit.cover,
+                              //         ),
+                              //       ),
+                              child: Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: CircleAvatar(
+                                radius: 15,
+                                backgroundColor: mainColor,
+                                child: IconButton(
+                                    onPressed: () {
+                                      // model.addImage();
+                                    },
+                                    icon: const Icon(
+                                      Icons.add,
+                                      color: fontColor,
+                                      size: 15,
+                                    )),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
+                      if (!model.isBusy &&
+                          model.status == true &&
+                          model.rumahModel != null)
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              _DetailChild(
+                                text: model.rumahModel!.pemilik!,
+                                icon: Icons.person,
+                              ),
+                              _DetailChild(
+                                text: model.rumahModel!.tanggalPembelian!,
+                                icon: Icons.calendar_today_outlined,
+                              ),
+                              _DetailChild(
+                                text: "Rp. ${model.rumahModel!.harga!}",
+                                icon: Icons.attach_money_outlined,
+                              ),
+                              _DetailChild(
+                                text: 'Rp. ${model.rumahModel!.cicilan!}',
+                                icon: Icons.money_outlined,
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (model.isBusy)
+                        const Expanded(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 15,
+                  // create rounded button with edit on top right
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: mainColor,
+                      child: IconButton(
+                          onPressed: () {
+                            // model.addImage();
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: fontColor,
+                            size: 15,
+                          )),
+                    ),
                   ),
                 ],
               ),
-              Positioned(
-                top: 15,
-                right: 65,
-                child: IconButton(
-                  onPressed: () {
-                    model.log.i('Edit Profile');
-                  },
-                  icon: const Icon(
-                    Icons.edit,
-                    color: mainColor,
-                    size: 30,
-                  ),
-                ),
-              ),
-              Positioned(
-                  top: 15,
-                  right: 15,
-                  child: IconButton(
-                    onPressed: () {
-                      model.log.i('Logout');
-                      model.logout();
-                    },
-                    icon: const Icon(
-                      Icons.logout,
-                      color: mainColor,
-                      size: 30,
-                    ),
-                  )),
-            ],
+            ),
           ),
         );
       },
@@ -124,7 +143,12 @@ class UserProfileView extends StatelessWidget {
 class _DetailChild extends StatelessWidget {
   const _DetailChild({
     Key? key,
+    required this.text,
+    required this.icon,
   }) : super(key: key);
+
+  final String text;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -133,8 +157,8 @@ class _DetailChild extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.maps_home_work_outlined,
+          Icon(
+            icon,
             color: mainColor,
             size: 40,
           ),
@@ -142,7 +166,7 @@ class _DetailChild extends StatelessWidget {
             width: 20,
           ),
           Text(
-            'Jln 2, Blok C, No 2',
+            text,
             style: regularTextStyle.copyWith(
               fontSize: 15,
               color: mainGrey,

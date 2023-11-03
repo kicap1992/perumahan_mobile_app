@@ -21,7 +21,7 @@ class PlayVideoDialogView extends StatelessWidget {
     return ViewModelBuilder<PlayVideoDialogViewModel>.reactive(
       viewModelBuilder: () => PlayVideoDialogViewModel(),
       onViewModelReady: (PlayVideoDialogViewModel model) async {
-        await model.init();
+        await model.init(request!.data);
       },
       builder: (
         BuildContext context,
@@ -34,50 +34,58 @@ class PlayVideoDialogView extends StatelessWidget {
             // height: 450,
             padding: const EdgeInsets.all(15),
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AspectRatio(
-                    aspectRatio: 16 / 11,
-                    child: NativeVideoPlayerView(
-                      onViewReady: (controller) async {
-                        final videoSource = await VideoSource.init(
-                          path: request!.data.toString(),
-                          type: VideoSourceType.file,
-                        );
-                        await controller.loadVideoSource(videoSource);
-                        model.nativeVideoPlayerController = controller;
-                        model.notifyListeners();
-                        model.nativeVideoPlayerController!.play();
-                        // loop video
-                        model.nativeVideoPlayerController!.onPlaybackEnded
-                            .addListener(() {
-                          model.nativeVideoPlayerController!.seekTo(0);
-                          model.nativeVideoPlayerController!.play();
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // create button to play video
-                  SizedBox(
-                    width: 150,
-                    child: MyButton(
-                      onPressed: () {
-                        model.playVideo = !model.playVideo;
-                        if (model.playVideo) {
-                          model.nativeVideoPlayerController!.play();
-                        } else {
-                          model.nativeVideoPlayerController!.pause();
-                        }
-                        model.notifyListeners();
-                      },
-                      text: model.playVideo ? 'Pause' : 'Play',
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                child: model.status != null
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 16 / 11,
+                            child: NativeVideoPlayerView(
+                              onViewReady: (controller) async {
+                                final videoSource = await VideoSource.init(
+                                  path: model.status == 'file'
+                                      ? model.path!
+                                      : model.url!,
+                                  type: model.status == 'file'
+                                      ? VideoSourceType.file
+                                      : VideoSourceType.network,
+                                );
+                                await controller.loadVideoSource(videoSource);
+                                model.nativeVideoPlayerController = controller;
+                                model.notifyListeners();
+                                model.nativeVideoPlayerController!.play();
+                                // loop video
+                                model.nativeVideoPlayerController!
+                                    .onPlaybackEnded
+                                    .addListener(() {
+                                  model.nativeVideoPlayerController!.seekTo(0);
+                                  model.nativeVideoPlayerController!.play();
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          // create button to play video
+                          SizedBox(
+                            width: 150,
+                            child: MyButton(
+                              onPressed: () {
+                                model.playVideo = !model.playVideo;
+                                if (model.playVideo) {
+                                  model.nativeVideoPlayerController!.play();
+                                } else {
+                                  model.nativeVideoPlayerController!.pause();
+                                }
+                                model.notifyListeners();
+                              },
+                              text: model.playVideo ? 'Pause' : 'Play',
+                            ),
+                          ),
+                        ],
+                      )
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      )),
           ),
         );
       },

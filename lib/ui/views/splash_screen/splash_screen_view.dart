@@ -47,7 +47,7 @@ class SplashScreenView extends StatelessWidget {
                 ),
                 const Expanded(child: SizedBox()),
                 Text(
-                  'Jl. Raya Mutiara Alga No. 1, \nKec. Ciputat, Kota Tangerang Selatan, \nBanten 15412',
+                  'Kecamatan Suppa, \nKabupaten Pinrang,\nSulawesi Selatan,91131',
                   style: regularTextStyle.copyWith(
                     color: backgroundColor,
                     fontSize: 12,

@@ -38,10 +38,22 @@ class UserIndexView extends StatelessWidget {
             backgroundColor: mainColor,
             elevation: 0,
             automaticallyImplyLeading: false,
+            actions: [
+              // create logout button
+              IconButton(
+                onPressed: () {
+                  model.logout();
+                },
+                icon: const Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
           // extendBody: true,
           body: ExtendedNavigator(
-            navigatorKey: StackedService.nestedNavigationKey(2),
+            navigatorKey: StackedService.nestedNavigationKey(7),
             router: UserIndexViewRouter(),
           ),
           bottomNavigationBar: StylishBottomBar(

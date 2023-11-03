@@ -25,24 +25,14 @@ class UserListPembangunanView extends StatelessWidget {
           body: Column(
             children: [
               const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MyTopWidget(
-                      icon: Icons.list_alt_outlined,
-                      title: 'Pembangunan',
-                      subtitle: '15 kali',
-                      // lastUpdate: '31/02/15 - 10.00 am',
-                    ),
-                    MyTopWidget(
-                      icon: Icons.home,
-                      title: 'Progress',
-                      subtitle: '76 %',
-                      // lastUpdate: '31/02/15 - 10.00 am',
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: MyTopWidget(
+                  icon: Icons.list_alt_outlined,
+                  title: 'Pembangunan',
+                  subtitle:
+                      '${model.listProgress != null ? model.listProgress!.length : 0} Progress',
+                  // lastUpdate: '31/02/15 - 10.00 am',
                 ),
               ),
               const SizedBox(height: 25),
@@ -63,27 +53,47 @@ class UserListPembangunanView extends StatelessWidget {
                         ],
                       ),
                       // create a listview with 20 dummy data on card and scrollable
-                      child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        itemCount: 20,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            child: GestureDetector(
-                              onTap: () {
-                                model.log.i('Card $index tapped');
-                              },
-                              child: ListTile(
-                                title: Text('1/02/15 - 10.00 am',
-                                    style: boldTextStyle.copyWith(
-                                        fontSize: 13, color: mainColor)),
-                                subtitle: Text('Progress $index'),
-                                trailing: Text('Pembangunan $index'),
-                              ),
-                            ),
-                          );
-                        },
-                      )),
+                      child: model.isBusy
+                          ? const Center(child: CircularProgressIndicator())
+                          : model.status == false
+                              ? const Center(child: Text('Error Loading Data'))
+                              : model.listProgress!.isEmpty
+                                  ? const Center(child: Text('Data Kosong'))
+                                  : ListView.builder(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      itemCount: model.listProgress!.length,
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          child: ListTile(
+                                            title: Text(
+                                              model.listProgress![index]
+                                                  .createdAt!,
+                                              style: boldTextStyle.copyWith(
+                                                fontSize: 13,
+                                                color: mainColor,
+                                              ),
+                                            ),
+                                            subtitle: Text(model
+                                                .listProgress![index].ket!),
+                                            // create icon show
+                                            trailing: CircleAvatar(
+                                              backgroundColor: mainColor,
+                                              child: IconButton(
+                                                icon: const Icon(
+                                                  Icons.list_alt_outlined,
+                                                  color: backgroundColor,
+                                                ),
+                                                onPressed: () {
+                                                  model.checkProgress(model
+                                                      .listProgress![index]);
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    )),
                 ),
               ),
               const SizedBox(height: 20),

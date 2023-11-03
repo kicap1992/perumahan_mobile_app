@@ -5,22 +5,31 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_video_player/native_video_player.dart';
+import 'package:perumahan_bew/model/rumah_model.dart';
 
 import '../../../app/app.dialogs.dart';
 import '../../../app/app.logger.dart';
 import '../../../app/core/custom_base_view_model.dart';
 import '../../../app/themes/app_colors.dart';
+import '../../../model/my_response_model.dart';
 
 class TambahLihatProgressBottomSheetViewModel extends CustomBaseViewModel {
   final log = getLogger('TambahLihatProgressBottomSheetViewModel');
 
   NativeVideoPlayerController? nativeVideoPlayerController;
 
+  String? level;
+  MandorModel? mandorModel;
+  TextEditingController? mandorController = TextEditingController();
+  TextEditingController? noHpController = TextEditingController();
+
   String? idPerumahan;
+  ProgressModel? progressModel;
 
   // form variable
   final globalKey = GlobalKey<FormState>();
   TextEditingController? ketController = TextEditingController();
+  TextEditingController? waktuController = TextEditingController();
 
   // image video variable
   // image picker
@@ -29,9 +38,40 @@ class TambahLihatProgressBottomSheetViewModel extends CustomBaseViewModel {
   XFile? imageVideoFile;
   Uint8List? imageVideoBytes;
   String? imageVideoType;
-  Future<void> init(String data) async {
+  Future<void> init(data) async {
     globalVar.backPressed = "exitApp";
-    idPerumahan = data;
+    idPerumahan = data['idPerumahan'];
+    // log.i(data['progressModel']);
+
+    if (data['progressModel'] != null) {
+      progressModel = data['progressModel'];
+      ketController!.text = progressModel!.ket!;
+      waktuController!.text = progressModel!.createdAt!;
+      log.i('type: ${progressModel!.type}');
+      imageVideoType = progressModel!.type;
+    }
+
+    level = await mySharedPrefs.getString('level');
+    if (level == 'Pemilik Rumah') {
+      await getData();
+    }
+  }
+
+  getData() async {
+    setBusy(true);
+    try {
+      var response =
+          await httpService.get('mandor?id=${progressModel!.idMandor}');
+      MyResponseModel myResponseModel = MyResponseModel.fromJson(response.data);
+      mandorModel = MandorModel.fromJson(myResponseModel.data);
+      log.i('mandorModel: ${mandorModel!.nama}');
+      mandorController!.text = mandorModel!.nama!;
+      noHpController!.text = mandorModel!.noTelpon!;
+    } catch (e) {
+      log.e('Error: $e');
+    } finally {
+      setBusy(false);
+    }
   }
 
   addImage(String type) async {
@@ -79,13 +119,20 @@ class TambahLihatProgressBottomSheetViewModel extends CustomBaseViewModel {
     });
   }
 
-  playVideo() async {
+  playVideo(String status, String? url) async {
     // play video by imageVideoPath
+    log.i('play video');
+    log.i(status);
+    log.i(url);
 
     await dialogService.showCustomDialog(
       variant: DialogType.playVideoDialogView,
       title: 'Video',
-      data: imageVideoPath,
+      data: {
+        'status': status,
+        'url': url,
+        'path': imageVideoPath,
+      },
     );
   }
 
@@ -117,13 +164,20 @@ class TambahLihatProgressBottomSheetViewModel extends CustomBaseViewModel {
     }
   }
 
-  showImage(BuildContext context) async {
+  showImage(BuildContext context, String status, String? url) async {
+    log.i(status);
+    log.i(url);
     showImageViewer(
       context,
-      Image.memory(
-        imageVideoBytes!,
-        fit: BoxFit.fill,
-      ).image,
+      status == 'file'
+          ? Image.memory(
+              imageVideoBytes!,
+              fit: BoxFit.fill,
+            ).image
+          : Image.network(
+              url!,
+              fit: BoxFit.fill,
+            ).image,
       swipeDismissible: true,
       doubleTapZoomable: true,
     );

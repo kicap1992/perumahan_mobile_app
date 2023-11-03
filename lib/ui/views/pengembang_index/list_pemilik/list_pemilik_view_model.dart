@@ -1,3 +1,4 @@
+import '../../../../app/app.bottomsheets.dart';
 import '../../../../app/app.logger.dart';
 import '../../../../app/core/custom_base_view_model.dart';
 import '../../../../model/my_response_model.dart';
@@ -48,5 +49,16 @@ class ListPemilikViewModel extends CustomBaseViewModel {
     } finally {
       setBusy(false);
     }
+  }
+
+  checkProgress(ProgressModel progressModel) async {
+    await bottomSheetService.showCustomSheet(
+      variant: BottomSheetType.tambahLihatProgressBottomSheetView,
+      title: 'Lihat Progress',
+      data: {
+        'idPerumahan': progressModel.idRumah,
+        'progressModel': progressModel,
+      },
+    );
   }
 }

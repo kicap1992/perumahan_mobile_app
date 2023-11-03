@@ -84,6 +84,7 @@ class ProgressModel {
   String? nama;
   String? noTelpon;
   int? no;
+  String? type;
 
   ProgressModel(
       {this.idProgress,
@@ -94,7 +95,8 @@ class ProgressModel {
       this.idMandor,
       this.nama,
       this.noTelpon,
-      this.no});
+      this.no,
+      this.type});
 
   ProgressModel.fromJson(Map<String, dynamic> json) {
     idProgress = json['id_progress'];
@@ -106,6 +108,7 @@ class ProgressModel {
     nama = json['nama'];
     noTelpon = json['no_telpon'];
     no = json['no'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -119,6 +122,29 @@ class ProgressModel {
     data['nama'] = nama;
     data['no_telpon'] = noTelpon;
     data['no'] = no;
+    data['type'] = type;
+    return data;
+  }
+}
+
+class MandorModel {
+  String? idMandor;
+  String? nama;
+  String? noTelpon;
+
+  MandorModel({this.idMandor, this.nama, this.noTelpon});
+
+  MandorModel.fromJson(Map<String, dynamic> json) {
+    idMandor = json['id_mandor'];
+    nama = json['nama'];
+    noTelpon = json['no_telpon'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id_mandor'] = idMandor;
+    data['nama'] = nama;
+    data['no_telpon'] = noTelpon;
     return data;
   }
 }

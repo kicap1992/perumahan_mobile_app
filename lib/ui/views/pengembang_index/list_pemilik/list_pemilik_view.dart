@@ -92,7 +92,8 @@ class ListPemilikView extends StatelessWidget {
                                         return Card(
                                           child: GestureDetector(
                                             onTap: () {
-                                              model.log.i('Card $index tapped');
+                                              model.checkProgress(
+                                                  model.listProgress[index]);
                                             },
                                             child: ListTile(
                                               title: Text(

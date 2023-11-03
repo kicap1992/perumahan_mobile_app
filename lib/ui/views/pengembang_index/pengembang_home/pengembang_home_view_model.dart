@@ -15,12 +15,18 @@ class PengembangHomeViewModel extends CustomBaseViewModel {
 
   late String url;
   late String level;
+  bool status = true;
+  double progress = 0;
 
   late WebViewController webVIewcontroller;
   final Completer<WebViewController> webViewControllerCompleter =
       Completer<WebViewController>();
 
   Future<void> init() async {
+    // Future.delayed(const Duration(milliseconds: 1), () {
+    //   status = false;
+    //   notifyListeners();
+    // });
     globalVar.backPressed = "exitApp";
     url = dotenv.env['url']!;
     log.d(url);
